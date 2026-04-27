@@ -7,5 +7,5 @@ pillow
 numpy==1.26.4
 matplotlib
 gdown
-opencv-python-headless==4.9.0.80
+
 groq
