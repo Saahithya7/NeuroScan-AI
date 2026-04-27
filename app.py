@@ -18,25 +18,35 @@ if not os.path.exists(MODEL_PATH):
     url = "https://drive.google.com/file/d/1V7M85rGTMWwHyjwVfLVAp_5Qj6oh0SOS/view?usp=drive_link"
     gdown.download(url, MODEL_PATH, quiet=False)
 
+
+@st.cache_resource
+def load_model():
+    model = base_model   # initialize model structure
+
+    state_dict = torch.load(MODEL_PATH, map_location="cpu")
+    model.load_state_dict(state_dict)
+
+    model.eval()
+    return model
 # -------------------------------
 # Load model
 # -------------------------------
-@st.cache_resource
-def load_model():
-    model = torch.load(MODEL_PATH, map_location="cpu")
-    model.eval()
-    return model
+# @st.cache_resource
+# def load_model():
+#     model = torch.load(MODEL_PATH, map_location="cpu")
+#     model.eval()
+#     return model
 
 
-@st.cache_resource
-def load_model():
-    model = base_model  # initialize architecture
+# @st.cache_resource
+# def load_model():
+#     model = base_model  # initialize architecture
 
-    # state_dict = torch.load("best_vit_finetuned.pth", map_location="cpu")
-    # model.load_state_dict(state_dict)
+#     # state_dict = torch.load("best_vit_finetuned.pth", map_location="cpu")
+#     # model.load_state_dict(state_dict)
 
-    model.eval()
-    return model
+#     model.eval()
+#     return model
 # model = load_model()
 
 # -------------------------------
