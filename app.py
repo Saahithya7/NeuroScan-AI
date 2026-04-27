@@ -82,7 +82,7 @@
 # import gdown
 # from PIL import Image
 # from vit_model import model as base_model
-# import cv2
+
 # import matplotlib
 # matplotlib.use("Agg")
 
@@ -142,7 +142,7 @@ from PIL import Image
 import torch
 import numpy as np
 # import cv2
-import matplotlib
+import matplotlib.pyplot as plt
 matplotlib.use("Agg")
 
 from vit_model import model, predict, CLASS_NAMES, device
@@ -231,9 +231,10 @@ if uploaded_file:
         st.subheader("Gradient Attention Map")
         attn    = st.session_state["attn"]
         img_np  = np.array(st.session_state["image"].resize((224, 224)))
-        heatmap = cv2.applyColorMap(np.uint8(255 * attn), cv2.COLORMAP_JET)
-        heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
-        overlay = cv2.addWeighted(img_np, 0.6, heatmap, 0.4, 0)
+        heatmap = plt.cm.jet(attn)[:, :, :3]
+        heatmap = (heatmap * 255).astype(np.uint8)
+        
+        overlay = (0.6 * img_np + 0.4 * heatmap).astype(np.uint8)
         c1, c2  = st.columns(2)
         c1.image(np.uint8(255 * attn), caption="Raw Attention", use_container_width=True, clamp=True)
         c2.image(overlay, caption="Overlay", use_container_width=True)
