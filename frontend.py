@@ -132,9 +132,6 @@
 #         attn   = st.session_state["attn"]
 #         img_np = np.array(st.session_state["image"].resize((224, 224)))
 
-#         heatmap = cv2.applyColorMap(np.uint8(255 * attn), cv2.COLORMAP_JET)
-#         heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
-#         overlay = cv2.addWeighted(img_np, 0.6, heatmap, 0.4, 0)
 
 #         c1, c2 = st.columns(2)
 #         c1.image(np.uint8(255 * attn), caption="Raw Attention", use_container_width=True, clamp=True)
