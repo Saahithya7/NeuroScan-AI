@@ -4,6 +4,10 @@ import torch
 import os
 import gdown
 from PIL import Image
+import streamlit as st
+import torch
+from vit_model import model as base_model
+
 
 # -------------------------------
 # Download model if not present
@@ -23,7 +27,17 @@ def load_model():
     model.eval()
     return model
 
-model = load_model()
+
+@st.cache_resource
+def load_model():
+    model = base_model  # initialize architecture
+
+    # state_dict = torch.load("best_vit_finetuned.pth", map_location="cpu")
+    # model.load_state_dict(state_dict)
+
+    model.eval()
+    return model
+# model = load_model()
 
 # -------------------------------
 # UI
