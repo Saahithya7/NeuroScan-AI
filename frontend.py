@@ -171,6 +171,10 @@ from vit_model import model, predict, CLASS_NAMES, device
 from shap_model import explain
 from attention_map import generate_attention_map
 from llm_report import generate_report
+import matplotlib.pyplot as plt
+
+
+
 
 st.set_page_config(page_title="NeuroScan AI", page_icon="🧠", layout="centered")
 
@@ -255,9 +259,10 @@ st.markdown('<div class="hero-sub">Brain Tumor Classification · XAI · LLM Repo
 
 # ── Groq API Key input ────────────────────────────────────────────────────────
 st.markdown('<div class="sec">Groq API Key</div>', unsafe_allow_html=True)
-api_key = st.text_input("Enter your Groq API key", type="password",
-                         placeholder="gsk_xxxxxxxxxxxxxxxxxx",
-                         label_visibility="collapsed")
+api_key = st.secrets["GROQ_API_KEY"]
+# api_key = st.text_input("Enter your Groq API key", type="password",
+#                          placeholder="gsk_xxxxxxxxxxxxxxxxxx",
+#                          label_visibility="collapsed")
 
 # ── Upload ────────────────────────────────────────────────────────────────────
 st.markdown('<div class="sec">Upload MRI Scan</div>', unsafe_allow_html=True)
@@ -347,9 +352,12 @@ if uploaded_file:
         st.markdown('<div class="sec">Gradient Attention Map</div>', unsafe_allow_html=True)
         attn   = st.session_state["attn"]
         img_np = np.array(st.session_state["image"].resize((224, 224)))
-        heatmap = cv2.applyColorMap(np.uint8(255 * attn), cv2.COLORMAP_JET)
-        heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
-        overlay = cv2.addWeighted(img_np, 0.6, heatmap, 0.4, 0)
+
+
+        heatmap = plt.cm.jet(attn)[:, :, :3]   # apply colormap
+        heatmap = (heatmap * 255).astype(np.uint8)
+
+        overlay = (0.6 * img_np + 0.4 * heatmap).astype(np.uint8)
         c1, c2  = st.columns(2)
         c1.image(np.uint8(255 * attn), caption="Raw Attention", use_container_width=True, clamp=True)
         c2.image(overlay, caption="Overlay", use_container_width=True)
