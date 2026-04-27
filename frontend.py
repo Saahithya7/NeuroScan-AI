@@ -2,7 +2,7 @@
 # from PIL import Image
 # import torch
 # import numpy as np
-# import cv2
+
 # import matplotlib
 # matplotlib.use("Agg")
 
@@ -163,7 +163,6 @@ import streamlit as st
 from PIL import Image
 import torch
 import numpy as np
-# import cv2
 import matplotlib
 matplotlib.use("Agg")
 
@@ -174,7 +173,12 @@ from llm_report import generate_report
 import matplotlib.pyplot as plt
 
 
+import matplotlib.pyplot as plt
 
+heatmap = plt.cm.jet(attn)[:, :, :3]
+heatmap = (heatmap * 255).astype(np.uint8)
+
+overlay = (0.6 * img_np + 0.4 * heatmap).astype(np.uint8)
 
 st.set_page_config(page_title="NeuroScan AI", page_icon="🧠", layout="centered")
 
